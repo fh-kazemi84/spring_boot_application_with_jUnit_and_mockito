@@ -115,4 +115,20 @@ public class CustomerRepositoryTest {
         assertThat(updatedCustomer.getFirstName()).isEqualTo("Fati");
     }
 
+    // JUnit test for delete customer operation
+    @DisplayName("JUnit test for delete customer operation")
+    @Test
+    public void givenCustomerObject_whenDelete_thenRemoveCustomer(){
+        Customer customer = Customer.builder()
+                .firstName("Fatemeh")
+                .lastName("Kazemi")
+                .email("fh.kazemi84@gmail.com")
+                .build();
+        customerRepository.save(customer);
+
+        customerRepository.deleteById(customer.getId());
+        Optional<Customer> customerOptional = customerRepository.findById(customer.getId());
+
+        assertThat(customerOptional).isEmpty();
+    }
 }
