@@ -1,9 +1,11 @@
 package com.kazemi.spring_boot._application_with_jUnit_and_mockito.service;
 
+import com.kazemi.spring_boot._application_with_jUnit_and_mockito.exception.ResourceNotFoundException;
 import com.kazemi.spring_boot._application_with_jUnit_and_mockito.model.Customer;
 import com.kazemi.spring_boot._application_with_jUnit_and_mockito.repository.CustomerRepository;
 import com.kazemi.spring_boot._application_with_jUnit_and_mockito.service.impl.CustomerServiceImpl;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -65,4 +67,43 @@ public class CustomerServiceTests {
 
         assertThat(savedCustomer).isNotNull();
     }
+
+    // JUnit test for saveCustomer method
+    @DisplayName("JUnit test for saveCustomer method which throws exception")
+    @Test
+    public void givenExistingEmail_whenSaveCustomer_thenThrowsException(){
+        given(customerRepository.findByEmail(customer.getEmail()))
+                .willReturn(Optional.of(customer));
+
+        System.out.println(customerRepository);
+        System.out.println(customerService);
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            customerService.saveCustomer(customer);
+        });
+
+        verify(customerRepository, never()).save(any(Customer.class));
+    }
+
+    // JUnit test for getAllCustomers method
+    @DisplayName("JUnit test for getAllCustomers method")
+    @Test
+    public void givenCustomersList_whenGetAllCustomers_thenReturnCustomersList(){
+        Customer customer_1 = Customer.builder()
+                .id(2L)
+                .firstName("Juli")
+                .lastName("Laundu")
+                .email("jlaundu@gmail.com")
+                .build();
+
+        given(customerRepository.findAll()).willReturn(List.of(customer,customer_1));
+
+        List<Customer> customerList = customerService.getAllCustomers();
+
+        assertThat(customerList).isNotNull();
+        assertThat(customerList.size()).isEqualTo(2);
+    }
+
+
+
 }
