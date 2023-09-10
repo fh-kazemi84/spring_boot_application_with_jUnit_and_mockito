@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author fh.kazemi
@@ -41,7 +42,6 @@ public class CustomerRepositoryTest {
     @DisplayName("JUnit test for get all customers operation")
     @Test
     public void givenCustomersList_whenFindAll_thenCustomersList(){
-        // given - precondition or setup
         Customer customer_1 = Customer.builder()
                 .firstName("Fatemeh")
                 .lastName("Kazemi")
@@ -57,12 +57,27 @@ public class CustomerRepositoryTest {
         customerRepository.save(customer_1);
         customerRepository.save(customer_2);
 
-        // when -  action or the behaviour that we are going test
         List<Customer> customerList = customerRepository.findAll();
 
-        // then - verify the output
         assertThat(customerList).isNotNull();
         assertThat(customerList.size()).isEqualTo(2);
     }
+
+    // JUnit test for get customer by id operation
+    @DisplayName("JUnit test for get customer by id operation")
+    @Test
+    public void givenCustomerObject_whenFindById_thenReturnCustomerObject(){
+        Customer customer = Customer.builder()
+                .firstName("Fatemeh")
+                .lastName("Kazemi")
+                .email("fh.kazemi84@gmail.com")
+                .build();
+        customerRepository.save(customer);
+
+        Customer customerDB = customerRepository.findById(customer.getId()).get();
+
+        assertThat(customerDB).isNotNull();
+    }
+
 
 }
