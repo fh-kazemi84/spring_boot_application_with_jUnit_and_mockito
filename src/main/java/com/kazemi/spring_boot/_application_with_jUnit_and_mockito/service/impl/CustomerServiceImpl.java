@@ -1,5 +1,6 @@
 package com.kazemi.spring_boot._application_with_jUnit_and_mockito.service.impl;
 
+import com.kazemi.spring_boot._application_with_jUnit_and_mockito.exception.ResourceNotFoundException;
 import com.kazemi.spring_boot._application_with_jUnit_and_mockito.model.Customer;
 import com.kazemi.spring_boot._application_with_jUnit_and_mockito.repository.CustomerRepository;
 import com.kazemi.spring_boot._application_with_jUnit_and_mockito.service.CustomerService;
@@ -20,7 +21,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer saveCustomer(Customer customer) {
-        return null;
+        Optional<Customer> savedCustomer = customerRepository.findByEmail(customer.getEmail());
+        if(savedCustomer.isPresent()){
+            throw new ResourceNotFoundException("Customer already exist with given email:" + customer.getEmail());
+        }
+        return customerRepository.save(customer);
     }
 
     @Override
