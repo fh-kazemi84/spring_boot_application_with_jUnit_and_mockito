@@ -117,4 +117,16 @@ public class CustomerServiceTests {
         assertThat(customerList.size()).isEqualTo(0);
     }
 
+    // JUnit test for getCustomerById method
+    @DisplayName("JUnit test for getCustomerById method")
+    @Test
+    public void givenCustomerId_whenGetCustomerById_thenReturnCustomerObject(){
+        given(customerRepository.findById(1L)).willReturn(Optional.of(customer));
+
+        Customer savedCustomer = customerService.getCustomerById(customer.getId()).get();
+
+        assertThat(savedCustomer).isNotNull();
+
+    }
+
 }
