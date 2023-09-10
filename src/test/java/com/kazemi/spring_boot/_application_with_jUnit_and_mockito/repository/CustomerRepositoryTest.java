@@ -131,4 +131,22 @@ public class CustomerRepositoryTest {
 
         assertThat(customerOptional).isEmpty();
     }
+
+    // JUnit test for custom query using JPQL with index
+    @DisplayName("JUnit test for custom query using JPQL with index")
+    @Test
+    public void givenFirstNameAndLastName_whenFindByJPQL_thenReturnCustomerObject(){
+        Customer customer = Customer.builder()
+                .firstName("Fatemeh")
+                .lastName("Kazemi")
+                .email("fh.kazemi84@gmail.com")
+                .build();
+        customerRepository.save(customer);
+        String firstName = "Fatemeh";
+        String lastName = "Kazemi";
+
+        Customer savedCustomer = customerRepository.findByJPQL(firstName, lastName);
+
+        assertThat(savedCustomer).isNotNull();
+    }
 }
