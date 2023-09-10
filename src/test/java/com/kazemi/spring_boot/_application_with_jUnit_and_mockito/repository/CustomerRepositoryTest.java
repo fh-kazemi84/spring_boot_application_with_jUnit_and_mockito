@@ -181,4 +181,20 @@ public class CustomerRepositoryTest {
 
         assertThat(savedCustomer).isNotNull();
     }
+
+    // JUnit test for custom query using native SQL with named params
+    @DisplayName("JUnit test for custom query using native SQL with named params")
+    @Test
+    public void givenFirstNameAndLastName_whenFindByNativeSQLNamedParams_thenReturnCustomerObject(){
+        Customer customer = Customer.builder()
+                .firstName("Fatemeh")
+                .lastName("Kazemi")
+                .email("fh.kazemi84@gmail.com")
+                .build();
+        customerRepository.save(customer);
+
+        Customer savedCustomer = customerRepository.findByNativeSQLNamed(customer.getFirstName(), customer.getLastName());
+
+        assertThat(savedCustomer).isNotNull();
+    }
 }
