@@ -104,6 +104,17 @@ public class CustomerServiceTests {
         assertThat(customerList.size()).isEqualTo(2);
     }
 
+    // JUnit test for getAllCustomers method
+    @DisplayName("JUnit test for getAllCustomers method (negative scenario)")
+    @Test
+    public void givenEmptyCustomersList_whenGetAllCustomers_thenReturnEmptyCustomersList(){
 
+        given(customerRepository.findAll()).willReturn(Collections.emptyList());
+
+        List<Customer> customerList = customerService.getAllCustomers();
+
+        assertThat(customerList).isEmpty();
+        assertThat(customerList.size()).isEqualTo(0);
+    }
 
 }
