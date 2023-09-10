@@ -53,6 +53,7 @@ public class CustomerServiceTests {
     @DisplayName("JUnit test for saveCustomer method")
     @Test
     public void givenCustomerObject_whenSaveCustomer_thenReturnCustomerObject(){
+        // given
         given(customerRepository.findByEmail(customer.getEmail()))
                 .willReturn(Optional.empty());
 
@@ -61,10 +62,12 @@ public class CustomerServiceTests {
         System.out.println(customerRepository);
         System.out.println(customerService);
 
+        // when
         Customer savedCustomer = customerService.saveCustomer(customer);
 
         System.out.println(savedCustomer);
 
+        // then
         assertThat(savedCustomer).isNotNull();
     }
 
@@ -72,16 +75,19 @@ public class CustomerServiceTests {
     @DisplayName("JUnit test for saveCustomer method which throws exception")
     @Test
     public void givenExistingEmail_whenSaveCustomer_thenThrowsException(){
+        // given
         given(customerRepository.findByEmail(customer.getEmail()))
                 .willReturn(Optional.of(customer));
 
         System.out.println(customerRepository);
         System.out.println(customerService);
 
+        // when
         assertThrows(ResourceNotFoundException.class, () -> {
             customerService.saveCustomer(customer);
         });
 
+        //then
         verify(customerRepository, never()).save(any(Customer.class));
     }
 
@@ -89,6 +95,7 @@ public class CustomerServiceTests {
     @DisplayName("JUnit test for getAllCustomers method")
     @Test
     public void givenCustomersList_whenGetAllCustomers_thenReturnCustomersList(){
+        //given
         Customer customer_1 = Customer.builder()
                 .id(2L)
                 .firstName("Juli")
@@ -98,8 +105,10 @@ public class CustomerServiceTests {
 
         given(customerRepository.findAll()).willReturn(List.of(customer,customer_1));
 
+        //when
         List<Customer> customerList = customerService.getAllCustomers();
 
+        //then
         assertThat(customerList).isNotNull();
         assertThat(customerList.size()).isEqualTo(2);
     }
@@ -109,10 +118,13 @@ public class CustomerServiceTests {
     @Test
     public void givenEmptyCustomersList_whenGetAllCustomers_thenReturnEmptyCustomersList(){
 
+        //given
         given(customerRepository.findAll()).willReturn(Collections.emptyList());
 
+        //when
         List<Customer> customerList = customerService.getAllCustomers();
 
+        //then
         assertThat(customerList).isEmpty();
         assertThat(customerList.size()).isEqualTo(0);
     }
@@ -121,10 +133,13 @@ public class CustomerServiceTests {
     @DisplayName("JUnit test for getCustomerById method")
     @Test
     public void givenCustomerId_whenGetCustomerById_thenReturnCustomerObject(){
+        //given
         given(customerRepository.findById(1L)).willReturn(Optional.of(customer));
 
+        //when
         Customer savedCustomer = customerService.getCustomerById(customer.getId()).get();
 
+        //then
         assertThat(savedCustomer).isNotNull();
     }
 
@@ -132,12 +147,15 @@ public class CustomerServiceTests {
     @DisplayName("JUnit test for updateCustomer method")
     @Test
     public void givenCustomerObject_whenUpdateCustomer_thenReturnUpdatedCustomer(){
+        //given
         given(customerRepository.save(customer)).willReturn(customer);
         customer.setEmail("kazemi@gmail.com");
         customer.setFirstName("Fati");
 
+        //when
         Customer updatedCustomer = customerService.updateCustomer(customer);
 
+        //then
         assertThat(updatedCustomer.getEmail()).isEqualTo("kazemi@gmail.com");
         assertThat(updatedCustomer.getFirstName()).isEqualTo("Fati");
     }
@@ -146,13 +164,15 @@ public class CustomerServiceTests {
     @DisplayName("JUnit test for deleteCustomer method")
     @Test
     public void givenCustomerId_whenDeleteCustomer_thenNothing(){
+        //given
         long customerId = 1L;
 
         willDoNothing().given(customerRepository).deleteById(customerId);
 
+        //when
         customerService.deleteCustomer(customerId);
 
+        //then
         verify(customerRepository, times(1)).deleteById(customerId);
     }
-
 }
