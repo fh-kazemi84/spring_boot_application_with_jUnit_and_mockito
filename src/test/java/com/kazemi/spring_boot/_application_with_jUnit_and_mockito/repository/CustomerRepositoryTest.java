@@ -165,4 +165,20 @@ public class CustomerRepositoryTest {
 
         assertThat(savedCustomer).isNotNull();
     }
+
+    // JUnit test for custom query using native SQL with index
+    @DisplayName("JUnit test for custom query using native SQL with index")
+    @Test
+    public void givenFirstNameAndLastName_whenFindByNativeSQL_thenReturnCustomerObject(){
+        Customer customer = Customer.builder()
+                .firstName("Fatemeh")
+                .lastName("Kazemi")
+                .email("fh.kazemi84@gmail.com")
+                .build();
+        customerRepository.save(customer);
+
+        Customer savedCustomer = customerRepository.findByNativeSQL(customer.getFirstName(), customer.getLastName());
+
+        assertThat(savedCustomer).isNotNull();
+    }
 }
