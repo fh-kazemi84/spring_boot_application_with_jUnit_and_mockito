@@ -126,7 +126,20 @@ public class CustomerServiceTests {
         Customer savedCustomer = customerService.getCustomerById(customer.getId()).get();
 
         assertThat(savedCustomer).isNotNull();
+    }
 
+    // JUnit test for updateCustomer method
+    @DisplayName("JUnit test for updateCustomer method")
+    @Test
+    public void givenCustomerObject_whenUpdateCustomer_thenReturnUpdatedCustomer(){
+        given(customerRepository.save(customer)).willReturn(customer);
+        customer.setEmail("kazemi@gmail.com");
+        customer.setFirstName("Fati");
+
+        Customer updatedCustomer = customerService.updateCustomer(customer);
+
+        assertThat(updatedCustomer.getEmail()).isEqualTo("kazemi@gmail.com");
+        assertThat(updatedCustomer.getFirstName()).isEqualTo("Fati");
     }
 
 }
