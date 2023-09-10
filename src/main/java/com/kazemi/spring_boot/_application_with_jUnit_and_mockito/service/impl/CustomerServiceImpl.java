@@ -40,7 +40,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer updateCustomer(Customer updatedCustomer) {
-        return null;
+        return customerRepository.save(updatedCustomer);
     }
 
     @Override
