@@ -149,4 +149,20 @@ public class CustomerRepositoryTest {
 
         assertThat(savedCustomer).isNotNull();
     }
+
+    // JUnit test for custom query using JPQL with Named params
+    @DisplayName("JUnit test for custom query using JPQL with Named params")
+    @Test
+    public void givenFirstNameAndLastName_whenFindByJPQLNamedParams_thenReturnCustomerObject(){
+        Customer customer = Customer.builder()
+                .firstName("Fatemeh")
+                .lastName("Kazemi")
+                .email("fh.kazemi84@gmail.com")
+                .build();
+        customerRepository.save(customer);
+
+        Customer savedCustomer = customerRepository.findByJPQLNamedParams(customer.getFirstName(), customer.getLastName());
+
+        assertThat(savedCustomer).isNotNull();
+    }
 }
