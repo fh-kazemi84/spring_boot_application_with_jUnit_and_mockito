@@ -24,4 +24,13 @@ public class CustomerServiceTests {
 
     private Customer customer;
 
+    @BeforeEach
+    public void setup(){
+        customer = Customer.builder()
+                .id(1L)
+                .firstName("Fatemeh")
+                .lastName("Kazemi")
+                .email("fh.kazemi84@gmail.com")
+                .build();
+    }
 }
