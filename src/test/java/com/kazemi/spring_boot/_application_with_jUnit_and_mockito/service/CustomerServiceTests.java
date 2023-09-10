@@ -142,4 +142,17 @@ public class CustomerServiceTests {
         assertThat(updatedCustomer.getFirstName()).isEqualTo("Fati");
     }
 
+    // JUnit test for deleteCustomer method
+    @DisplayName("JUnit test for deleteCustomer method")
+    @Test
+    public void givenCustomerId_whenDeleteCustomer_thenNothing(){
+        long customerId = 1L;
+
+        willDoNothing().given(customerRepository).deleteById(customerId);
+
+        customerService.deleteCustomer(customerId);
+
+        verify(customerRepository, times(1)).deleteById(customerId);
+    }
+
 }
