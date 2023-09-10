@@ -20,7 +20,7 @@ import java.util.Optional;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace=AutoConfigureTestDatabase.Replace.NONE)
-public class CustomerRepositoryTest {
+public class CustomerRepositoryTests {
 
     @Autowired
     private CustomerRepository customerRepository;
