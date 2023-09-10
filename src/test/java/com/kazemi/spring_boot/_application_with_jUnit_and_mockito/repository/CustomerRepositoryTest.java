@@ -94,4 +94,25 @@ public class CustomerRepositoryTest {
 
         assertThat(customerDB).isNotNull();
     }
+
+    // JUnit test for update customer operation
+    @DisplayName("JUnit test for update customer operation")
+    @Test
+    public void givenCustomerObject_whenUpdateCustomer_thenReturnUpdatedCustomer(){
+        Customer customer = Customer.builder()
+                .firstName("Fatemeh")
+                .lastName("Kazemi")
+                .email("fh.kazemi84@gmail.com")
+                .build();
+        customerRepository.save(customer);
+
+        Customer savedCustomer = customerRepository.findById(customer.getId()).get();
+        savedCustomer.setEmail("kazemi@gmail.com");
+        savedCustomer.setFirstName("Fati");
+        Customer updatedCustomer =  customerRepository.save(savedCustomer);
+
+        assertThat(updatedCustomer.getEmail()).isEqualTo("kazemi@gmail.com");
+        assertThat(updatedCustomer.getFirstName()).isEqualTo("Fati");
+    }
+
 }
