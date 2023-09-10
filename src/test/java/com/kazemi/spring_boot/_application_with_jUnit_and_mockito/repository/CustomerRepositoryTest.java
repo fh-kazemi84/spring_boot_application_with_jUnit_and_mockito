@@ -79,5 +79,19 @@ public class CustomerRepositoryTest {
         assertThat(customerDB).isNotNull();
     }
 
+    // JUnit test for get customer by email operation
+    @DisplayName("JUnit test for get customer by email operation")
+    @Test
+    public void givenCustomerEmail_whenFindByEmail_thenReturnCustomerObject(){
+        Customer customer = Customer.builder()
+                .firstName("Fatemeh")
+                .lastName("Kazemi")
+                .email("fh.kazemi84@gmail.com")
+                .build();
+        customerRepository.save(customer);
 
+        Customer customerDB = customerRepository.findByEmail(customer.getEmail()).get();
+
+        assertThat(customerDB).isNotNull();
+    }
 }
