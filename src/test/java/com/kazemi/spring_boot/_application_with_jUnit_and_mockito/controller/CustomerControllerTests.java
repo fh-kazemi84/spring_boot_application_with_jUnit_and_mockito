@@ -90,6 +90,24 @@ public class CustomerControllerTests {
                 .andDo(print())
                 .andExpect(jsonPath("$.size()",
                         is(listOfCustomers.size())));
-
     }
+
+    // positive scenario - valid customer id
+    // JUnit test for GET customer by id REST API
+    @Test
+    public void givenCustomerId_whenGetCustomerById_thenReturnCustomerObject() throws Exception{
+        // given - precondition or setup
+        given(customerService.getCustomerById(customer.getId())).willReturn(Optional.of(customer));
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/api/customers/{id}", customer.getId()));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.firstName", is(customer.getFirstName())))
+                .andExpect(jsonPath("$.lastName", is(customer.getLastName())))
+                .andExpect(jsonPath("$.email", is(customer.getEmail())));
+    }
+
 }
