@@ -41,5 +41,21 @@ public class CustomerController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity<Customer> updateCustomer(@PathVariable("id") long customerId,
+                                                   @RequestBody Customer customer){
+        return customerService.getCustomerById(customerId)
+                .map(savedCustomer-> {
+
+                    savedCustomer.setFirstName(customer.getFirstName());
+                    savedCustomer.setLastName(customer.getLastName());
+                    savedCustomer.setEmail(customer.getEmail());
+
+                    Customer updatedCustomer = customerService.updateCustomer(savedCustomer);
+                    return new ResponseEntity<>(updatedCustomer, HttpStatus.OK);
+
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
 }
