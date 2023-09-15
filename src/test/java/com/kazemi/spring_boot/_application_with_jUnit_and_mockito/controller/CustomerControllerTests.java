@@ -175,4 +175,19 @@ public class CustomerControllerTests {
         response.andExpect(status().isNotFound())
                 .andDo(print());
     }
+
+    // JUnit test for delete customer REST API
+    @Test
+    public void givenCustomerId_whenDeleteCustomer_thenReturn200() throws Exception{
+        // given - precondition or setup
+        long customerId = 1L;
+        willDoNothing().given(customerService).deleteCustomer(customerId);
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(delete("/api/customers/{id}", customerId));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print());
+    }
 }
