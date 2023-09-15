@@ -58,4 +58,13 @@ public class CustomerController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteCustomer(@PathVariable("id") long customerId){
+
+        customerService.deleteCustomer(customerId);
+
+        return new ResponseEntity<String>("Customer deleted successfully!.", HttpStatus.OK);
+
+    }
+
 }
