@@ -29,12 +29,18 @@ public class CustomerRepositoryTests {
     @DisplayName("JUnit test for save customer operation")
     @Test
     public void givenCustomerObject_whenSave_thenReturnSavedCustomer(){
+
+        //given - precondition or setup
         Customer customer= Customer.builder()
                 .firstName("Fatemeh")
                 .lastName("Kazemi")
                 .email("fh.kazemi84@gmail.com")
                 .build();
+
+        // when - action or the behaviour that we are going test
         Customer savedCustomer = customerRepository.save(customer);
+
+        // then - verify the output
         assertThat(savedCustomer).isNotNull();
         assertThat(savedCustomer.getId()).isGreaterThan(0);
     }
@@ -42,6 +48,8 @@ public class CustomerRepositoryTests {
     @DisplayName("JUnit test for get all customers operation")
     @Test
     public void givenCustomersList_whenFindAll_thenCustomersList(){
+
+        //given - precondition or setup
         Customer customer_1 = Customer.builder()
                 .firstName("Fatemeh")
                 .lastName("Kazemi")
@@ -57,8 +65,10 @@ public class CustomerRepositoryTests {
         customerRepository.save(customer_1);
         customerRepository.save(customer_2);
 
+        // when -  action or the behaviour that we are going test
         List<Customer> customerList = customerRepository.findAll();
 
+        // then - verify the output
         assertThat(customerList).isNotNull();
         assertThat(customerList.size()).isEqualTo(2);
     }
@@ -67,6 +77,8 @@ public class CustomerRepositoryTests {
     @DisplayName("JUnit test for get customer by id operation")
     @Test
     public void givenCustomerObject_whenFindById_thenReturnCustomerObject(){
+
+        // given - precondition or setup
         Customer customer = Customer.builder()
                 .firstName("Fatemeh")
                 .lastName("Kazemi")
@@ -74,8 +86,10 @@ public class CustomerRepositoryTests {
                 .build();
         customerRepository.save(customer);
 
+        // when -  action or the behaviour that we are going test
         Customer customerDB = customerRepository.findById(customer.getId()).get();
 
+        // then - verify the output
         assertThat(customerDB).isNotNull();
     }
 
@@ -83,6 +97,8 @@ public class CustomerRepositoryTests {
     @DisplayName("JUnit test for get customer by email operation")
     @Test
     public void givenCustomerEmail_whenFindByEmail_thenReturnCustomerObject(){
+
+        // given - precondition or setup
         Customer customer = Customer.builder()
                 .firstName("Fatemeh")
                 .lastName("Kazemi")
@@ -90,8 +106,10 @@ public class CustomerRepositoryTests {
                 .build();
         customerRepository.save(customer);
 
+        // when -  action or the behaviour that we are going test
         Customer customerDB = customerRepository.findByEmail(customer.getEmail()).get();
 
+        // then - verify the output
         assertThat(customerDB).isNotNull();
     }
 
@@ -99,6 +117,8 @@ public class CustomerRepositoryTests {
     @DisplayName("JUnit test for update customer operation")
     @Test
     public void givenCustomerObject_whenUpdateCustomer_thenReturnUpdatedCustomer(){
+
+        // given - precondition or setup
         Customer customer = Customer.builder()
                 .firstName("Fatemeh")
                 .lastName("Kazemi")
@@ -106,11 +126,13 @@ public class CustomerRepositoryTests {
                 .build();
         customerRepository.save(customer);
 
+        // when -  action or the behaviour that we are going test
         Customer savedCustomer = customerRepository.findById(customer.getId()).get();
         savedCustomer.setEmail("kazemi@gmail.com");
         savedCustomer.setFirstName("Fati");
         Customer updatedCustomer =  customerRepository.save(savedCustomer);
 
+        // then - verify the output
         assertThat(updatedCustomer.getEmail()).isEqualTo("kazemi@gmail.com");
         assertThat(updatedCustomer.getFirstName()).isEqualTo("Fati");
     }
@@ -119,6 +141,8 @@ public class CustomerRepositoryTests {
     @DisplayName("JUnit test for delete customer operation")
     @Test
     public void givenCustomerObject_whenDelete_thenRemoveCustomer(){
+
+        // given - precondition or setup
         Customer customer = Customer.builder()
                 .firstName("Fatemeh")
                 .lastName("Kazemi")
@@ -126,9 +150,11 @@ public class CustomerRepositoryTests {
                 .build();
         customerRepository.save(customer);
 
+        // when -  action or the behaviour that we are going test
         customerRepository.deleteById(customer.getId());
         Optional<Customer> customerOptional = customerRepository.findById(customer.getId());
 
+        // then - verify the output
         assertThat(customerOptional).isEmpty();
     }
 
@@ -136,6 +162,8 @@ public class CustomerRepositoryTests {
     @DisplayName("JUnit test for custom query using JPQL with index")
     @Test
     public void givenFirstNameAndLastName_whenFindByJPQL_thenReturnCustomerObject(){
+
+        // given - precondition or setup
         Customer customer = Customer.builder()
                 .firstName("Fatemeh")
                 .lastName("Kazemi")
@@ -145,8 +173,10 @@ public class CustomerRepositoryTests {
         String firstName = "Fatemeh";
         String lastName = "Kazemi";
 
+        // when -  action or the behaviour that we are going test
         Customer savedCustomer = customerRepository.findByJPQL(firstName, lastName);
 
+        // then - verify the output
         assertThat(savedCustomer).isNotNull();
     }
 
@@ -154,6 +184,8 @@ public class CustomerRepositoryTests {
     @DisplayName("JUnit test for custom query using JPQL with Named params")
     @Test
     public void givenFirstNameAndLastName_whenFindByJPQLNamedParams_thenReturnCustomerObject(){
+
+        // given - precondition or setup
         Customer customer = Customer.builder()
                 .firstName("Fatemeh")
                 .lastName("Kazemi")
@@ -161,8 +193,10 @@ public class CustomerRepositoryTests {
                 .build();
         customerRepository.save(customer);
 
+        // when -  action or the behaviour that we are going test
         Customer savedCustomer = customerRepository.findByJPQLNamedParams(customer.getFirstName(), customer.getLastName());
 
+        // then - verify the output
         assertThat(savedCustomer).isNotNull();
     }
 
@@ -170,6 +204,8 @@ public class CustomerRepositoryTests {
     @DisplayName("JUnit test for custom query using native SQL with index")
     @Test
     public void givenFirstNameAndLastName_whenFindByNativeSQL_thenReturnCustomerObject(){
+
+        // given - precondition or setup
         Customer customer = Customer.builder()
                 .firstName("Fatemeh")
                 .lastName("Kazemi")
@@ -177,8 +213,10 @@ public class CustomerRepositoryTests {
                 .build();
         customerRepository.save(customer);
 
+        // when -  action or the behaviour that we are going test
         Customer savedCustomer = customerRepository.findByNativeSQL(customer.getFirstName(), customer.getLastName());
 
+        // then - verify the output
         assertThat(savedCustomer).isNotNull();
     }
 
@@ -186,6 +224,8 @@ public class CustomerRepositoryTests {
     @DisplayName("JUnit test for custom query using native SQL with named params")
     @Test
     public void givenFirstNameAndLastName_whenFindByNativeSQLNamedParams_thenReturnCustomerObject(){
+
+        // given - precondition or setup
         Customer customer = Customer.builder()
                 .firstName("Fatemeh")
                 .lastName("Kazemi")
@@ -193,8 +233,10 @@ public class CustomerRepositoryTests {
                 .build();
         customerRepository.save(customer);
 
+        // when -  action or the behaviour that we are going test
         Customer savedCustomer = customerRepository.findByNativeSQLNamed(customer.getFirstName(), customer.getLastName());
 
+        // then - verify the output
         assertThat(savedCustomer).isNotNull();
     }
 }
