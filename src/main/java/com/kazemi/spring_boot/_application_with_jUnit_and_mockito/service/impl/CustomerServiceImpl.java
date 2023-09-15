@@ -4,6 +4,7 @@ import com.kazemi.spring_boot._application_with_jUnit_and_mockito.exception.Reso
 import com.kazemi.spring_boot._application_with_jUnit_and_mockito.model.Customer;
 import com.kazemi.spring_boot._application_with_jUnit_and_mockito.repository.CustomerRepository;
 import com.kazemi.spring_boot._application_with_jUnit_and_mockito.service.CustomerService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,7 @@ import java.util.Optional;
  * @author fh.kazemi
  **/
 
+@Service
 public class CustomerServiceImpl implements CustomerService {
     private CustomerRepository customerRepository;
 
