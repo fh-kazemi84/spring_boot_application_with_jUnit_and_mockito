@@ -125,4 +125,31 @@ public class CustomerControllerTests {
                 .andDo(print());
 
     }
+
+    // JUnit test for update customer REST API - positive scenario
+    @Test
+    public void givenUpdatedCustomer_whenUpdateCustomer_thenReturnUpdateCustomerObject() throws Exception{
+        // given - precondition or setup
+        Customer updatedCustomer = Customer.builder()
+                .firstName("Fati")
+                .lastName("Ka")
+                .email("kazemi@gmail.com")
+                .build();
+        given(customerService.getCustomerById(customer.getId())).willReturn(Optional.of(customer));
+        given(customerService.updateCustomer(any(Customer.class)))
+                .willAnswer((invocation)-> invocation.getArgument(0));
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(put("/api/customers/{id}", customer.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatedCustomer)));
+
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.firstName", is(updatedCustomer.getFirstName())))
+                .andExpect(jsonPath("$.lastName", is(updatedCustomer.getLastName())))
+                .andExpect(jsonPath("$.email", is(updatedCustomer.getEmail())));
+    }
 }
