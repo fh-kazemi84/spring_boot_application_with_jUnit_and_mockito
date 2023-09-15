@@ -72,4 +72,24 @@ public class CustomerControllerTests {
                 .andExpect(jsonPath("$.email",
                         is(customer.getEmail())));
     }
+
+    // JUnit test for Get All customers REST API
+    @Test
+    public void givenListOfCustomers_whenGetAllCustomers_thenReturnCustomersList() throws Exception{
+        // given - precondition or setup
+        List<Customer> listOfCustomers = new ArrayList<>();
+        listOfCustomers.add(Customer.builder().firstName("Fatemeh").lastName("Kazemi").email("fh.kazemi84@gmail.com").build());
+        listOfCustomers.add(Customer.builder().firstName("Juli").lastName("Laundu").email("jlaundu@gmail.com").build());
+        given(customerService.getAllCustomers()).willReturn(listOfCustomers);
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/api/customers"));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.size()",
+                        is(listOfCustomers.size())));
+
+    }
 }
