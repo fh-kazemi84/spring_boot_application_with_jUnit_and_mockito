@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author fh.kazemi
  **/
@@ -24,5 +26,10 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.CREATED)
     public Customer createCustomer(@RequestBody Customer customer){
         return customerService.saveCustomer(customer);
+    }
+
+    @GetMapping
+    public List<Customer> getAllCustomers(){
+        return customerService.getAllCustomers();
     }
 }
