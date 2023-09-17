@@ -39,6 +39,7 @@ public class CustomerControllerIntegrationTests {
 
     @Autowired
     private ObjectMapper objectMapper;
+
     private Customer customer;
 
     @BeforeEach
@@ -54,6 +55,8 @@ public class CustomerControllerIntegrationTests {
 
     @Test
     public void givenCustomerObject_whenCreateCustomer_thenReturnSavedCustomer() throws Exception{
+
+        // given - precondition or setup
 
         // when - action or behaviour that we are going test
         ResultActions response = mockMvc.perform(post("/api/customers")
@@ -89,5 +92,6 @@ public class CustomerControllerIntegrationTests {
                 .andExpect(jsonPath("$.size()",
                         is(listOfCustomers.size())));
     }
+
 
 }
