@@ -110,4 +110,21 @@ public class CustomerControllerIntegrationTests {
                 .andExpect(jsonPath("$.email", is(customer.getEmail())));
     }
 
+    // negative scenario - valid customer id
+    // JUnit test for GET customer by id REST API
+    @Test
+    public void givenInvalidCustomerId_whenGetCustomerById_thenReturnEmpty() throws Exception{
+        // given - precondition or setup
+        long customerId = 1L;
+        customerRepository.save(customer);
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/api/customers/{id}", customerId));
+
+        // then - verify the output
+        response.andExpect(status().isNotFound())
+                .andDo(print());
+
+    }
+
 }
