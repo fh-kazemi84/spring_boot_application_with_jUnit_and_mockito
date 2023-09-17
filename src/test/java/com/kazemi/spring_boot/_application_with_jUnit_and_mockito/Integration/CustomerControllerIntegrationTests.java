@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -125,6 +125,32 @@ public class CustomerControllerIntegrationTests {
         response.andExpect(status().isNotFound())
                 .andDo(print());
 
+    }
+
+    // JUnit test for update customer REST API - positive scenario
+    @Test
+    public void givenUpdatedCustomer_whenUpdateCustomer_thenReturnUpdateCustomerObject() throws Exception{
+        // given - precondition or setup
+        customerRepository.save(customer);
+
+        Customer updatedCustomer = Customer.builder()
+                .firstName("Fati")
+                .lastName("Ka")
+                .email("kazemi@gmail.com")
+                .build();
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(put("/api/customers/{id}", customer.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatedCustomer)));
+
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.firstName", is(updatedCustomer.getFirstName())))
+                .andExpect(jsonPath("$.lastName", is(updatedCustomer.getLastName())))
+                .andExpect(jsonPath("$.email", is(updatedCustomer.getEmail())));
     }
 
 }
