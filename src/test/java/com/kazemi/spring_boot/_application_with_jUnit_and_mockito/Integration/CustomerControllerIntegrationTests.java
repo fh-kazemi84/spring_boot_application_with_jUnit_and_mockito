@@ -153,4 +153,27 @@ public class CustomerControllerIntegrationTests {
                 .andExpect(jsonPath("$.email", is(updatedCustomer.getEmail())));
     }
 
+    // JUnit test for update customer REST API - negative scenario
+    @Test
+    public void givenUpdatedCustomer_whenUpdateCustomer_thenReturn404() throws Exception{
+        // given - precondition or setup
+        long customerId= 1L;
+        customerRepository.save(customer);
+
+        Customer updatedCustomer = Customer.builder()
+                .firstName("Fati")
+                .lastName("Ka")
+                .email("kazemi@gmail.com")
+                .build();
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(put("/api/customers/{id}", customerId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatedCustomer)));
+
+        // then - verify the output
+        response.andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
 }
