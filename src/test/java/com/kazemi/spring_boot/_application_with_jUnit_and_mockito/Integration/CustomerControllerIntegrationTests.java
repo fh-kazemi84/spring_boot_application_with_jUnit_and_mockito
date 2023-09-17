@@ -46,7 +46,6 @@ public class CustomerControllerIntegrationTests {
     void setup(){
         customerRepository.deleteAll();
         customer = Customer.builder()
-                .id(1L)
                 .firstName("Fatemeh")
                 .lastName("Kazemi")
                 .email("fh.kazemi84@gmail.com")
@@ -93,5 +92,22 @@ public class CustomerControllerIntegrationTests {
                         is(listOfCustomers.size())));
     }
 
+    // positive scenario - valid customer id
+    // JUnit test for GET customer by id REST API
+    @Test
+    public void givenCustomerId_whenGetCustomerById_thenReturnCustomerObject() throws Exception{
+        // given - precondition or setup
+        customerRepository.save(customer);
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/api/customers/{id}", customer.getId()));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.firstName", is(customer.getFirstName())))
+                .andExpect(jsonPath("$.lastName", is(customer.getLastName())))
+                .andExpect(jsonPath("$.email", is(customer.getEmail())));
+    }
 
 }
